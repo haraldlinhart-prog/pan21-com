@@ -1,13 +1,13 @@
 // api/contact.js – PAN21 Kontaktformular
-// Vercel Serverless Function – kein npm, nur Node.js built-ins
-// Spam-Schutz: Honeypot + Zeitprüfung + Rate-Limit (in-memory)
+// Vercel Serverless Function mit Nodemailer
+// Spam-Schutz: Honeypot + Zeitprüfung + Rate-Limit
 
-const https = require('https');
+const nodemailer = require('nodemailer');
 
-// ── Rate-Limit ──────────────────────────────────────────────────
+// ── Rate-Limit (in-memory) ──────────────────────────────────────
 const rateLimitMap = new Map();
 const RATE_MAX    = 3;
-const RATE_WINDOW = 60 * 60 * 1000; // 1 Stunde
+const RATE_WINDOW = 60 * 60 * 1000;
 
 function isRateLimited(ip) {
   const now  = Date.now();
@@ -17,96 +17,17 @@ function isRateLimited(ip) {
   return hits.length > RATE_MAX;
 }
 
-// ── SMTP via net/tls (STARTTLS auf Port 587) ────────────────────
-function sendMail({ to, subject, html, text, replyTo }) {
-  return new Promise((resolve, reject) => {
-    const net = require('net');
-    const tls = require('tls');
-
-    const HOST = 'mail.pan21.com';
-    const PORT = 587;
-    const USER = 'mail@pan21.com';
-    const PASS = process.env.SMTP_PASS || 'Pan21003jomtien';
-    const FROM = 'mail@pan21.com';
-
-    const b64 = (s) => Buffer.from(s).toString('base64');
-
-    // MIME multipart/alternative (text + html)
-    const boundary = 'pan21_' + Date.now();
-    const replyHeader = replyTo ? `Reply-To: ${replyTo}\r\n` : '';
-    const mime = [
-      `From: "PAN21.com" <${FROM}>`,
-      `To: ${to}`,
-      `Subject: ${subject}`,
-      replyTo ? `Reply-To: ${replyTo}` : '',
-      'MIME-Version: 1.0',
-      `Content-Type: multipart/alternative; boundary="${boundary}"`,
-      'Date: ' + new Date().toUTCString(),
-      '',
-      `--${boundary}`,
-      'Content-Type: text/plain; charset=UTF-8',
-      'Content-Transfer-Encoding: base64',
-      '',
-      b64(text),
-      '',
-      `--${boundary}`,
-      'Content-Type: text/html; charset=UTF-8',
-      'Content-Transfer-Encoding: base64',
-      '',
-      b64(html),
-      '',
-      `--${boundary}--`,
-    ].filter(l => l !== null).join('\r\n');
-
-    let socket = net.createConnection(PORT, HOST);
-    let tlsSocket = null;
-    let active = socket;
-    let state = 'greeting';
-    let buf = '';
-
-    const write = (s) => { active.write(s + '\r\n'); };
-
-    const onData = (data) => {
-      buf += data.toString();
-      const lines = buf.split('\r\n');
-      buf = lines.pop();
-
-      for (const line of lines) {
-        if (!line) continue;
-        const code = line.slice(0, 3);
-
-        if (state === 'greeting'    && code === '220') { state = 'ehlo';     write('EHLO pan21.com'); }
-        else if (state === 'ehlo'   && code === '250' && !line.startsWith('250-')) { state = 'starttls'; write('STARTTLS'); }
-        else if (state === 'starttls' && code === '220') {
-          state = 'tlshandshake';
-          tlsSocket = tls.connect({ socket, host: HOST, rejectUnauthorized: false }, () => {
-            active = tlsSocket;
-            tlsSocket.on('data', onData);
-            state = 'ehlo2';
-            write('EHLO pan21.com');
-          });
-        }
-        else if (state === 'ehlo2'  && code === '250' && !line.startsWith('250-')) { state = 'auth';     write('AUTH LOGIN'); }
-        else if (state === 'auth'   && code === '334') { state = 'user';     write(b64(USER)); }
-        else if (state === 'user'   && code === '334') { state = 'pass';     write(b64(PASS)); }
-        else if (state === 'pass'   && code === '235') { state = 'mailfrom'; write(`MAIL FROM:<${FROM}>`); }
-        else if (state === 'mailfrom' && code === '250') { state = 'rcptto';  write(`RCPT TO:<${to}>`); }
-        else if (state === 'rcptto' && code === '250') { state = 'data';     write('DATA'); }
-        else if (state === 'data'   && code === '354') { state = 'body';     write(mime + '\r\n.'); }
-        else if (state === 'body'   && code === '250') { state = 'quit';     write('QUIT'); resolve(); }
-        else if (state === 'quit') { active.destroy(); }
-        else if (code[0] === '4' || code[0] === '5') {
-          active.destroy();
-          reject(new Error(`SMTP ${code}: ${line}`));
-        }
-      }
-    };
-
-    socket.on('data', onData);
-    socket.on('error', reject);
-    socket.setTimeout(15000, () => { active.destroy(); reject(new Error('SMTP timeout')); });
-  });
-}
+// ── SMTP Transporter ────────────────────────────────────────────
+const transporter = nodemailer.createTransport({
+  host:   'mail.pan21.com',
+  port:   587,
+  secure: false,
+  auth: {
+    user: 'mail@pan21.com',
+    pass: process.env.SMTP_PASS || 'Pan21003jomtien',
+  },
+  tls: { rejectUnauthorized: false },
+});
 
 // ── Handler ─────────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
@@ -131,14 +52,15 @@ module.exports = async function handler(req, res) {
     if (!email || !email.includes('@') || !nachricht || nachricht.trim().length < 5)
       return res.status(400).json({ ok: false, error: 'Bitte füllen Sie alle Pflichtfelder aus.' });
 
-    const safeName     = (name     || '').slice(0, 200).replace(/[<>]/g, '');
-    const safeLand     = (land     || '–').slice(0, 100).replace(/[<>]/g, '');
-    const safeEmail    = email.slice(0, 200).replace(/[<>]/g, '');
-    const safeNachricht= nachricht.slice(0, 5000).replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const timestamp    = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' });
+    const safeName      = (name     || '').slice(0, 200).replace(/[<>]/g, '');
+    const safeLand      = (land     || '–').slice(0, 100).replace(/[<>]/g, '');
+    const safeEmail     = email.slice(0, 200).replace(/[<>]/g, '');
+    const safeNachricht = nachricht.slice(0, 5000).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const timestamp     = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' });
 
-    // Mail an Besucher
-    await sendMail({
+    // ── Bestätigung an Besucher ──────────────────────────────
+    await transporter.sendMail({
+      from:    '"PAN21.com" <mail@pan21.com>',
       to:      safeEmail,
       subject: 'Kontaktanfrage PAN21 – Ihre Nachricht ist angekommen',
       text:
@@ -179,12 +101,13 @@ ${safeNachricht}</div>
 Online-Termin: <a href="https://telefon-termin.com/beratung/">telefon-termin.com/beratung/</a></p>
 <div class="ft">PAN21.COM Corporate Consultants Ltd · 61 Bridge Street, Kington, Herefordshire, England<br>
 <a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://pan21.com">pan21.com</a><br><br>
-Diese E-Mail wurde automatisch generiert.</div>
+Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese Nachricht antworten.</div>
 </div></body></html>`
     });
 
-    // Interne Kopie
-    await sendMail({
+    // ── Interne Kopie an support@pan21.com ───────────────────
+    await transporter.sendMail({
+      from:    '"PAN21 Website" <mail@pan21.com>',
       to:      'support@pan21.com',
       replyTo: safeEmail,
       subject: `Kontaktanfrage PAN21 – ${safeLand}${safeName ? ' – ' + safeName : ''}`,
