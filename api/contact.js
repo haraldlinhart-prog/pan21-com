@@ -20,8 +20,8 @@ function isRateLimited(ip) {
 // ── SMTP Transporter ────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
   host:   'mail.pan21.com',
-  port:   587,
-  secure: false,
+  port:   465,
+  secure: true,
   auth: {
     user: 'mail@pan21.com',
     pass: process.env.SMTP_PASS || 'Pan21003jomtien',
@@ -34,7 +34,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
 
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
-  res.setHeader('Access-Control-Allow-Origin', 'https://pan21.com');
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   try {
     const { email, name, land, nachricht, _hp, _ts } = req.body;
