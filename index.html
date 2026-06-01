@@ -1245,6 +1245,14 @@ body.en [data-lang="en"]{display:block}
             <label for="nachricht"><span data-lang="de">Ihre Nachricht *</span><span data-lang="en">Your Message *</span></label>
             <textarea id="nachricht" name="nachricht" placeholder="Beschreiben Sie kurz Ihr Vorhaben... / Briefly describe your project..." required></textarea>
           </div>
+          <!-- Spam-Schutz: Honeypot (unsichtbar für echte Nutzer) -->
+          <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
+            <label for="_hp">Website</label>
+            <input type="text" id="_hp" name="_hp" tabindex="-1" autocomplete="off" value="">
+          </div>
+          <!-- Spam-Schutz: Zeitstempel (wird per JS gesetzt) -->
+          <input type="hidden" id="_ts" name="_ts" value="">
+
           <button type="submit" class="form-submit">
             <span data-lang="de">Anfrage senden</span><span data-lang="en">Send Enquiry</span>
           </button>
@@ -1484,14 +1492,24 @@ var obs=new IntersectionObserver(function(entries){
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
 
-/* ── Contact Form → mailto ────────────────────────── */
+/* ── Contact Form → AJAX → /api/contact ──────────── */
+// Zeitstempel setzen (Spam-Schutz)
+(function(){
+  var ts=document.getElementById('_ts');
+  if(ts) ts.value=Date.now();
+})();
+
 document.getElementById('contactForm').addEventListener('submit',function(e){
   e.preventDefault();
+  var form     =this;
   var email    =document.getElementById('email').value.trim();
   var name     =document.getElementById('name').value.trim();
   var land     =document.getElementById('land').value;
   var nachricht=document.getElementById('nachricht').value.trim();
+  var hp       =document.getElementById('_hp').value;
+  var ts       =document.getElementById('_ts').value;
   var msg      =document.getElementById('formMsg');
+  var btn      =form.querySelector('button[type="submit"]');
   var isEN     =document.body.classList.contains('en');
 
   if(!email||!nachricht){
@@ -1500,20 +1518,46 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
     return;
   }
 
-  var subject=encodeURIComponent('PAN21 Anfrage: '+(land||'Allgemein')+(name?' – '+name:''));
-  var body=encodeURIComponent(
-    (name?'Name: '+name+'\n':'')+
-    'E-Mail: '+email+'\n'+
-    'Land / Rechtsform: '+(land||'–')+'\n\n'+
-    nachricht
-  );
+  // Button deaktivieren während des Sendens
+  btn.disabled=true;
+  btn.style.opacity='.6';
+  btn.style.cursor='not-allowed';
+  msg.className='form-msg';
+  msg.textContent=isEN?'Sending…':'Wird gesendet…';
 
-  window.location.href='mailto:support@pan21.com?subject='+subject+'&body='+body;
-
-  msg.className='form-msg success';
-  msg.textContent=isEN
-    ?'Your email client has been opened. Please send the prepared message. We will respond within 24 hours.'
-    :'Ihr E-Mail-Programm wurde geöffnet. Bitte senden Sie die vorbereitete Nachricht ab. Wir melden uns innerhalb von 24 Stunden.';
+  fetch('/api/contact',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email,name:name,land:land,nachricht:nachricht,_hp:hp,_ts:ts})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    btn.disabled=false;
+    btn.style.opacity='';
+    btn.style.cursor='';
+    if(data.ok){
+      msg.className='form-msg success';
+      msg.textContent=isEN
+        ?'Thank you! Your enquiry has been sent. You will receive a confirmation email. We will respond within 24 hours.'
+        :'Vielen Dank! Ihre Anfrage wurde gesendet. Sie erhalten eine Bestätigungs-E-Mail. Wir melden uns innerhalb von 24 Stunden.';
+      form.reset();
+      // Neuen Zeitstempel setzen nach Reset
+      var tsEl=document.getElementById('_ts');
+      if(tsEl) tsEl.value=Date.now();
+    } else {
+      msg.className='form-msg error';
+      msg.textContent=data.error||(isEN?'An error occurred. Please try again.':'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+    }
+  })
+  .catch(function(){
+    btn.disabled=false;
+    btn.style.opacity='';
+    btn.style.cursor='';
+    msg.className='form-msg error';
+    msg.textContent=isEN
+      ?'Connection error. Please try again or email us directly at support@pan21.com.'
+      :'Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie direkt an support@pan21.com.';
+  });
 });
 </script>
 </body>
