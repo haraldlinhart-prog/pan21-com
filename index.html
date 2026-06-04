@@ -291,16 +291,16 @@ nav{
   min-height:100vh;display:flex;align-items:center;
   padding:0 clamp(1rem,4vw,3rem);
   background:var(--black);
-  background-image:
-    radial-gradient(ellipse 60% 50% at 75% 42%,rgba(201,168,76,.1) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 55% at 8% 75%,rgba(26,58,110,.2) 0%,transparent 55%);
   position:relative;overflow:hidden;
 }
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.5}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(5,10,20,.85) 0%,rgba(5,10,20,.65) 50%,rgba(5,10,20,.8) 100%)}
+.hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 70% 45%,rgba(201,168,76,.08) 0%,transparent 60%)}
 .hero::before{
-  content:'';position:absolute;inset:0;
+  content:'';position:absolute;inset:0;z-index:2;
   background-image:
-    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(201,168,76,.028) 60px),
-    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(201,168,76,.028) 60px);
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(201,168,76,.022) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(201,168,76,.022) 60px);
 }
 .hero-inner{
   max-width:var(--max);margin:0 auto;width:100%;
@@ -397,6 +397,19 @@ nav{
 .section-lead{font-size:.9rem;max-width:620px;margin-bottom:3rem;line-height:1.8;letter-spacing:.01em}
 .section-dark2 .section-lead,.section-dark3 .section-lead{color:rgba(255,255,255,.48)}
 .section-light .section-lead{color:var(--ink2)}
+
+/* ─── VIDEO BACKGROUNDS ───────────────────────────────────── */
+.land-card-video{position:relative;overflow:hidden}
+.land-card-video .lv-video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;opacity:.18;
+  transition:opacity var(--trans);
+}
+.land-card-video:hover .lv-video{opacity:.28}
+.land-card-video .lv-content{position:relative;z-index:1}
+.nominee-video-wrap{position:relative;overflow:hidden;border-radius:2px}
+.nominee-video-wrap video{width:100%;display:block;border-radius:2px;opacity:.75}
+.nominee-video-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,18,30,.3) 0%,rgba(10,18,30,.5) 100%)}
 
 /* ─── LÄNDER GRID ─────────────────────────────────────────── */
 .laender-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
@@ -694,7 +707,11 @@ body.en [data-lang="en"]{display:block}
 
 <!-- ══════════════════════ HERO ══════════════════════ -->
 <section class="hero" id="hero" aria-label="Weltweite Firmengründung – PAN21">
-  <div class="hero-inner">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <source src="hero-pan21.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner" style="position:relative;z-index:3">
     <div>
       <p class="hero-eyebrow">
         <span data-lang="de">Weltweite Firmengründung · Seit 20+ Jahren</span>
@@ -818,7 +835,11 @@ body.en [data-lang="en"]{display:block}
     </p>
     <div class="laender-grid">
 
-      <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/uk-grossbritannien/" target="_blank" rel="noopener" class="land-card land-popular reveal">
+      <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/uk-grossbritannien/" target="_blank" rel="noopener" class="land-card land-card-video land-popular reveal">
+        <video class="lv-video" autoplay muted loop playsinline preload="none">
+          <source src="country-uk.mp4" type="video/mp4">
+        </video>
+        <div class="lv-content">
         <div class="land-flag">🇬🇧</div>
         <div class="land-country-de" data-lang="de">Großbritannien</div>
         <div class="land-country-en" data-lang="en">United Kingdom</div>
@@ -831,9 +852,14 @@ body.en [data-lang="en"]{display:block}
           <li><span data-lang="de">Nominee Director möglich</span><span data-lang="en">Nominee Director available</span></li>
         </ul>
         <span class="land-cta"><span data-lang="de">Jetzt gründen →</span><span data-lang="en">Form now →</span></span>
+        </div>
       </a>
 
-      <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/usa-firmengruendung/" target="_blank" rel="noopener" class="land-card reveal">
+      <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/usa-firmengruendung/" target="_blank" rel="noopener" class="land-card land-card-video reveal">
+        <video class="lv-video" autoplay muted loop playsinline preload="none">
+          <source src="country-usa.mp4" type="video/mp4">
+        </video>
+        <div class="lv-content">
         <div class="land-flag">🇺🇸</div>
         <div class="land-country-de" data-lang="de">USA</div>
         <div class="land-country-en" data-lang="en">United States of America</div>
@@ -846,6 +872,7 @@ body.en [data-lang="en"]{display:block}
           <li><span data-lang="de">Nominee Member möglich</span><span data-lang="en">Nominee Member available</span></li>
         </ul>
         <span class="land-cta"><span data-lang="de">Jetzt gründen →</span><span data-lang="en">Form now →</span></span>
+        </div>
       </a>
 
       <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/irland-firmengruendung/" target="_blank" rel="noopener" class="land-card reveal">
@@ -878,7 +905,11 @@ body.en [data-lang="en"]{display:block}
         <span class="land-cta"><span data-lang="de">Jetzt gründen →</span><span data-lang="en">Form now →</span></span>
       </a>
 
-      <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/hong-kong-firmengruendung/" target="_blank" rel="noopener" class="land-card reveal">
+      <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/hong-kong-firmengruendung/" target="_blank" rel="noopener" class="land-card land-card-video reveal">
+        <video class="lv-video" autoplay muted loop playsinline preload="none">
+          <source src="country-hk.mp4" type="video/mp4">
+        </video>
+        <div class="lv-content">
         <div class="land-flag">🇭🇰</div>
         <div class="land-country-de" data-lang="de">Hong Kong</div>
         <div class="land-country-en" data-lang="en">Hong Kong</div>
@@ -891,6 +922,7 @@ body.en [data-lang="en"]{display:block}
           <li><span data-lang="de">Nominee Director möglich</span><span data-lang="en">Nominee Director available</span></li>
         </ul>
         <span class="land-cta"><span data-lang="de">Jetzt gründen →</span><span data-lang="en">Form now →</span></span>
+        </div>
       </a>
 
       <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/australien-firmengruendung/" target="_blank" rel="noopener" class="land-card reveal">
@@ -1026,7 +1058,13 @@ body.en [data-lang="en"]{display:block}
           <a href="#kontakt" class="btn-primary"><span data-lang="de">Nominee-Service anfragen</span><span data-lang="en">Request Nominee Service</span></a>
         </div>
       </div>
-      <div class="nominee-features reveal">
+      <div class="reveal">
+        <div class="nominee-video-wrap" style="margin-bottom:1.5rem">
+          <video autoplay muted loop playsinline preload="none" style="width:100%;border-radius:2px;opacity:.8">
+            <source src="nominee-signing.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="nominee-features">
         <div class="nf-item">
           <div class="nf-icon">🇬🇧</div>
           <div>
@@ -1055,6 +1093,7 @@ body.en [data-lang="en"]{display:block}
             <p class="nf-text"><span data-lang="de">Nominee-Dienste auch für Hong Kong, Australien, Neuseeland, Belize und Nevis — auf Anfrage weltweit.</span><span data-lang="en">Nominee services also for Hong Kong, Australia, New Zealand, Belize and Nevis — worldwide on request.</span></p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -1245,14 +1284,6 @@ body.en [data-lang="en"]{display:block}
             <label for="nachricht"><span data-lang="de">Ihre Nachricht *</span><span data-lang="en">Your Message *</span></label>
             <textarea id="nachricht" name="nachricht" placeholder="Beschreiben Sie kurz Ihr Vorhaben... / Briefly describe your project..." required></textarea>
           </div>
-          <!-- Spam-Schutz: Honeypot (unsichtbar für echte Nutzer) -->
-          <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
-            <label for="_hp">Website</label>
-            <input type="text" id="_hp" name="_hp" tabindex="-1" autocomplete="off" value="">
-          </div>
-          <!-- Spam-Schutz: Zeitstempel (wird per JS gesetzt) -->
-          <input type="hidden" id="_ts" name="_ts" value="">
-
           <button type="submit" class="form-submit">
             <span data-lang="de">Anfrage senden</span><span data-lang="en">Send Enquiry</span>
           </button>
@@ -1492,24 +1523,14 @@ var obs=new IntersectionObserver(function(entries){
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
 
-/* ── Contact Form → AJAX → /api/contact ──────────── */
-// Zeitstempel setzen (Spam-Schutz)
-(function(){
-  var ts=document.getElementById('_ts');
-  if(ts) ts.value=Date.now();
-})();
-
+/* ── Contact Form → mailto ────────────────────────── */
 document.getElementById('contactForm').addEventListener('submit',function(e){
   e.preventDefault();
-  var form     =this;
   var email    =document.getElementById('email').value.trim();
   var name     =document.getElementById('name').value.trim();
   var land     =document.getElementById('land').value;
   var nachricht=document.getElementById('nachricht').value.trim();
-  var hp       =document.getElementById('_hp').value;
-  var ts       =document.getElementById('_ts').value;
   var msg      =document.getElementById('formMsg');
-  var btn      =form.querySelector('button[type="submit"]');
   var isEN     =document.body.classList.contains('en');
 
   if(!email||!nachricht){
@@ -1518,46 +1539,20 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
     return;
   }
 
-  // Button deaktivieren während des Sendens
-  btn.disabled=true;
-  btn.style.opacity='.6';
-  btn.style.cursor='not-allowed';
-  msg.className='form-msg';
-  msg.textContent=isEN?'Sending…':'Wird gesendet…';
+  var subject=encodeURIComponent('PAN21 Anfrage: '+(land||'Allgemein')+(name?' – '+name:''));
+  var body=encodeURIComponent(
+    (name?'Name: '+name+'\n':'')+
+    'E-Mail: '+email+'\n'+
+    'Land / Rechtsform: '+(land||'–')+'\n\n'+
+    nachricht
+  );
 
-  fetch('/api/contact',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:email,name:name,land:land,nachricht:nachricht,_hp:hp,_ts:ts})
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    btn.disabled=false;
-    btn.style.opacity='';
-    btn.style.cursor='';
-    if(data.ok){
-      msg.className='form-msg success';
-      msg.textContent=isEN
-        ?'Thank you! Your enquiry has been sent. You will receive a confirmation email. We will respond within 24 hours.'
-        :'Vielen Dank! Ihre Anfrage wurde gesendet. Sie erhalten eine Bestätigungs-E-Mail. Wir melden uns innerhalb von 24 Stunden.';
-      form.reset();
-      // Neuen Zeitstempel setzen nach Reset
-      var tsEl=document.getElementById('_ts');
-      if(tsEl) tsEl.value=Date.now();
-    } else {
-      msg.className='form-msg error';
-      msg.textContent=data.error||(isEN?'An error occurred. Please try again.':'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
-    }
-  })
-  .catch(function(){
-    btn.disabled=false;
-    btn.style.opacity='';
-    btn.style.cursor='';
-    msg.className='form-msg error';
-    msg.textContent=isEN
-      ?'Connection error. Please try again or email us directly at support@pan21.com.'
-      :'Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie direkt an support@pan21.com.';
-  });
+  window.location.href='mailto:support@pan21.com?subject='+subject+'&body='+body;
+
+  msg.className='form-msg success';
+  msg.textContent=isEN
+    ?'Your email client has been opened. Please send the prepared message. We will respond within 24 hours.'
+    :'Ihr E-Mail-Programm wurde geöffnet. Bitte senden Sie die vorbereitete Nachricht ab. Wir melden uns innerhalb von 24 Stunden.';
 });
 </script>
 </body>
