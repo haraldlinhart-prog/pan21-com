@@ -334,13 +334,12 @@ nav{
   min-height:100vh;display:flex;align-items:center;
   padding:0 clamp(1rem,4vw,3rem);
   background:var(--black);
-  background-image:
-    radial-gradient(ellipse 60% 50% at 75% 42%,rgba(201,168,76,.1) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 55% at 8% 75%,rgba(26,58,110,.2) 0%,transparent 55%);
   position:relative;overflow:hidden;
 }
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.35;}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(10,8,6,.88) 0%,rgba(10,8,6,.6) 50%,rgba(10,8,6,.82) 100%);}
 .hero::before{
-  content:'';position:absolute;inset:0;
+  content:'';position:absolute;inset:0;z-index:2;
   background-image:
     repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(201,168,76,.028) 60px),
     repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(201,168,76,.028) 60px);
@@ -348,7 +347,7 @@ nav{
 .hero-inner{
   max-width:var(--max);margin:0 auto;width:100%;
   display:grid;grid-template-columns:1.15fr 0.85fr;gap:4rem;align-items:center;
-  position:relative;z-index:1;padding-top:68px;
+  position:relative;z-index:3;padding-top:68px;
 }
 .hero-eyebrow{
   font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
@@ -831,6 +830,10 @@ body.en [data-lang="en"]{display:block}
 
 <!-- ══════════════════════ HERO ══════════════════════ -->
 <section class="hero" id="hero" aria-label="Weltweite Firmengründung – PAN21">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <source src="https://europan.group/video/firmen/firmen.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
   <div class="hero-inner">
     <div>
       <p class="hero-eyebrow">
