@@ -652,6 +652,100 @@ body.en [data-lang="en"]{display:block}
 /* ─── REVEAL ──────────────────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .reveal.visible{opacity:1;transform:none}
+/* ─── SECTION IMAGES ─────────────────────────────────────── */
+.section-img-row {
+  display:grid; grid-template-columns:1fr 420px; gap:3rem;
+  align-items:center; margin-bottom:3rem;
+}
+.section-img-wrap {
+  border-radius:8px; overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.35);
+  border:1px solid rgba(201,168,76,.2);
+}
+.section-img-wrap img { width:100%; height:280px; object-fit:cover; display:block; }
+.section-banner-img {
+  width:100%; height:240px; object-fit:cover; object-position:center 35%;
+  border-radius:8px; display:block; margin-bottom:2.5rem;
+  box-shadow:0 6px 28px rgba(0,0,0,.35);
+  border:1px solid rgba(201,168,76,.2);
+}
+.kontakt-img {
+  width:100%; height:200px; object-fit:cover;
+  border-radius:8px; display:block; margin-bottom:1.5rem;
+  box-shadow:0 6px 24px rgba(0,0,0,.3);
+  border:1px solid rgba(201,168,76,.2);
+}
+@media(max-width:900px) { .section-img-row { grid-template-columns:1fr; } }
+
+/* ─── PARTNER NETZWERK ───────────────────────────────────── */
+.partner-intro {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: start; margin-bottom: 4rem;
+}
+.partner-lead { font-size:1rem; color:rgba(245,247,250,.7); line-height:1.8; }
+.partner-stats { display:flex; flex-direction:column; gap:1.2rem; }
+.partner-stat {
+  display:flex; align-items:center; gap:1.2rem;
+  padding:1rem 1.4rem;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(184,150,90,.2); border-radius:8px;
+}
+.partner-stat-num {
+  font-family:var(--ff-d); font-size:2rem; font-weight:800;
+  color:var(--gold-lt); line-height:1; flex-shrink:0; min-width:60px;
+}
+.partner-stat-label { font-size:.85rem; color:rgba(245,247,250,.6); line-height:1.4; }
+
+.partner-cards {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.partner-card {
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(184,150,90,.2); border-radius:10px;
+  padding:1.8rem 1.6rem; display:flex; flex-direction:column;
+  transition: border-color .2s, box-shadow .2s;
+}
+.partner-card:hover { border-color:rgba(184,150,90,.5); box-shadow:0 6px 28px rgba(0,0,0,.3); }
+.partner-card-icon { font-size:2rem; margin-bottom:1rem; }
+.partner-card-title {
+  font-family:var(--ff-d); font-size:1.05rem; font-weight:700;
+  color:var(--white); margin-bottom:.6rem;
+}
+.partner-card-desc { font-size:.83rem; color:rgba(245,247,250,.6); line-height:1.65; flex:1; margin-bottom:1.2rem; }
+.partner-card-link {
+  font-size:.78rem; color:var(--gold-lt); text-decoration:none;
+  display:inline-flex; align-items:center; gap:.4rem;
+  transition:color .2s;
+}
+.partner-card-link:hover { color:var(--white); }
+
+.partner-img-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:3rem;
+}
+.partner-img-wrap {
+  border-radius:8px; overflow:hidden;
+  border:1px solid rgba(184,150,90,.2);
+  box-shadow:0 8px 32px rgba(0,0,0,.35);
+}
+.partner-img-wrap img { width:100%; height:240px; object-fit:cover; display:block; }
+
+.partner-cta {
+  text-align:center; margin-top:3rem;
+  padding:2.5rem; background:rgba(184,150,90,.08);
+  border:1px solid rgba(184,150,90,.2); border-radius:10px;
+}
+.partner-cta h3 {
+  font-family:var(--ff-d); font-size:1.5rem; color:var(--white);
+  margin-bottom:.8rem;
+}
+.partner-cta p { font-size:.9rem; color:rgba(245,247,250,.6); margin-bottom:1.5rem; }
+
+@media(max-width:900px) {
+  .partner-intro { grid-template-columns:1fr; gap:2rem; }
+  .partner-cards { grid-template-columns:1fr; }
+  .partner-img-row { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
@@ -670,7 +764,7 @@ body.en [data-lang="en"]{display:block}
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#hero" aria-label="PAN21 – Weltweite Firmengründung">
-      <span class="nav-logo-mark">P21</span>
+      <img src="logo.png" alt="PAN21" style="height:38px;width:auto;display:block">
       <span>PAN21<span style="font-weight:300;opacity:.5;font-size:.8em">.com</span></span>
     </a>
     <button class="hamburger" aria-label="Menü" onclick="document.getElementById('navLinks').classList.toggle('open')">
@@ -681,6 +775,7 @@ body.en [data-lang="en"]{display:block}
       <li><a href="#services"><span data-lang="de">Services</span><span data-lang="en">Services</span></a></li>
       <li><a href="#nominee"><span data-lang="de">Nominee &amp; Treuhand</span><span data-lang="en">Nominee &amp; Trustee</span></a></li>
       <li><a href="#why"><span data-lang="de">Über uns</span><span data-lang="en">About</span></a></li>
+      <li><a href="#partner"><span data-lang="de">Partner</span><span data-lang="en">Partners</span></a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#kontakt"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></a></li>
       <li><a href="https://telefon-termin.com/beratung/" target="_blank" rel="noopener" class="nav-cta">📅 <span data-lang="de">Termin</span><span data-lang="en">Book</span></a></li>
@@ -816,6 +911,7 @@ body.en [data-lang="en"]{display:block}
       <span data-lang="de">Wählen Sie das Land das zu Ihren Zielen passt — wir beraten Sie bei der Wahl der richtigen Rechtsform und Jurisdiktion für Ihre internationale Firmengründung.</span>
       <span data-lang="en">Choose the jurisdiction that fits your goals — we advise you on the right legal form and country for your company formation.</span>
     </p>
+    <img src="img/652234-airport-4615368.jpg" alt="Internationale Firmengründung weltweit" loading="lazy" class="section-banner-img reveal">
     <div class="laender-grid">
 
       <a href="https://shop.europan.group/produkt-kategorie/firmengruendung/uk-grossbritannien/" target="_blank" rel="noopener" class="land-card land-popular reveal">
@@ -961,10 +1057,15 @@ body.en [data-lang="en"]{display:block}
       <span data-lang="de">Alles aus <em>einer Hand</em></span>
       <span data-lang="en">Everything from <em>one source</em></span>
     </h2>
-    <p class="section-lead reveal">
-      <span data-lang="de">Firmengründung ist nur der Anfang. Wir begleiten Sie mit allen Diensten die Sie für eine erfolgreiche internationale Unternehmensstruktur benötigen — Nominee Director, Treuhänder, Registered Office, laufende Administration.</span>
-      <span data-lang="en">Company formation is just the beginning. We support you with all services needed for a successful international corporate structure — Nominee Director, Trustee, Registered Office, ongoing administration.</span>
-    </p>
+    <div class="section-img-row">
+      <p class="section-lead reveal" style="margin-bottom:0">
+        <span data-lang="de">Firmengründung ist nur der Anfang. Wir begleiten Sie mit allen Diensten die Sie für eine erfolgreiche internationale Unternehmensstruktur benötigen — Nominee Director, Treuhänder, Registered Office, laufende Administration.</span>
+        <span data-lang="en">Company formation is just the beginning. We support you with all services needed for a successful international corporate structure — Nominee Director, Trustee, Registered Office, ongoing administration.</span>
+      </p>
+      <div class="section-img-wrap reveal">
+        <img src="img/andyleunghk-hongkong-2680864.jpg" alt="Firmengründung Hong Kong – internationale Unternehmensstruktur" loading="lazy">
+      </div>
+    </div>
     <div class="services-grid">
       <div class="sv-card reveal">
         <div class="sv-icon">🏢</div>
@@ -1097,6 +1198,83 @@ body.en [data-lang="en"]{display:block}
   </div>
 </section>
 
+<!-- ══════════════════════ PARTNER NETZWERK ══════════════════════ -->
+<section class="section section-dark2" id="partner" aria-labelledby="partner-title">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">PAN21.org · Partnernetzwerk</p>
+    <h2 class="section-title reveal" id="partner-title">
+      <span data-lang="de">Verdienen Sie mit uns im <em>weltweiten Firmengründungs-Business</em></span>
+      <span data-lang="en">Earn with us in the <em>global company formation business</em></span>
+    </h2>
+
+    <div class="partner-intro reveal">
+      <div>
+        <p class="partner-lead">
+          <span data-lang="de">PAN21.org ist das internationale Partnernetzwerk für Berater, Steuerberater, Rechtsanwälte, Family Offices und Vermittler, die ihren Mandanten weltweite Firmengründungs-Leistungen anbieten möchten — ohne eigene Infrastruktur aufbauen zu müssen. Sie vermitteln, wir liefern, Sie verdienen.</span>
+          <span data-lang="en">PAN21.org is the international partner network for consultants, tax advisors, lawyers, family offices and intermediaries who want to offer global company formation services to their clients — without building their own infrastructure. You refer, we deliver, you earn.</span>
+        </p>
+        <p class="partner-lead" style="margin-top:1rem">
+          <span data-lang="de">Das Netzwerk ist bundesweit und international aktiv — mit erfahrenen Partnern in Deutschland, Österreich, der Schweiz, UK, Osteuropa und weiteren Märkten.</span>
+          <span data-lang="en">The network is active nationwide and internationally — with experienced partners in Germany, Austria, Switzerland, UK, Eastern Europe and beyond.</span>
+        </p>
+      </div>
+      <div class="partner-stats">
+        <div class="partner-stat">
+          <div class="partner-stat-num">20+</div>
+          <div class="partner-stat-label"><span data-lang="de">Jahre Erfahrung in der internationalen Firmengründung</span><span data-lang="en">Years of experience in international company formation</span></div>
+        </div>
+        <div class="partner-stat">
+          <div class="partner-stat-num">9</div>
+          <div class="partner-stat-label"><span data-lang="de">Jurisdiktionen — UK, USA, Irland, HK, Australien, NZ, Belize, Nevis, Deutschland</span><span data-lang="en">Jurisdictions — UK, USA, Ireland, HK, Australia, NZ, Belize, Nevis, Germany</span></div>
+        </div>
+        <div class="partner-stat">
+          <div class="partner-stat-num">∞</div>
+          <div class="partner-stat-label"><span data-lang="de">Keine Mindestvolumina — Partner verdienen ab der ersten Vermittlung</span><span data-lang="en">No minimum volumes — partners earn from the very first referral</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="partner-cards">
+      <div class="partner-card reveal">
+        <div class="partner-card-icon">💼</div>
+        <h3 class="partner-card-title"><span data-lang="de">Steuerberater & Rechtsanwälte</span><span data-lang="en">Tax Advisors & Lawyers</span></h3>
+        <p class="partner-card-desc"><span data-lang="de">Ergänzen Sie Ihr Portfolio mit internationalen Firmengründungen — ohne eigenes Back-Office. Wir übernehmen die gesamte Abwicklung, Sie behalten die Mandantenbeziehung.</span><span data-lang="en">Extend your portfolio with international company formations — without your own back office. We handle all processing, you retain the client relationship.</span></p>
+        <a href="https://www.pan21.org" target="_blank" rel="noopener" class="partner-card-link">→ pan21.org</a>
+      </div>
+      <div class="partner-card reveal">
+        <div class="partner-card-icon">🌍</div>
+        <h3 class="partner-card-title"><span data-lang="de">Internationale Vermittler</span><span data-lang="en">International Intermediaries</span></h3>
+        <p class="partner-card-desc"><span data-lang="de">Family Offices, Wealth Manager und internationale Berater vermitteln Mandanten aus aller Welt. Unser Netzwerk deckt alle relevanten Offshore- und Onshore-Jurisdiktionen ab.</span><span data-lang="en">Family offices, wealth managers and international consultants refer clients from around the world. Our network covers all relevant offshore and onshore jurisdictions.</span></p>
+        <a href="https://www.pan21.org" target="_blank" rel="noopener" class="partner-card-link">→ pan21.org</a>
+      </div>
+      <div class="partner-card reveal">
+        <div class="partner-card-icon">🤝</div>
+        <h3 class="partner-card-title"><span data-lang="de">Bundesweite Partner DE/AT/CH</span><span data-lang="en">Partners in DE/AT/CH</span></h3>
+        <p class="partner-card-desc"><span data-lang="de">Deutschsprachige Partner in Deutschland, Österreich und der Schweiz vermitteln gezielt Gründer, Unternehmer und Investoren — mit attraktiven Provisionen und transparenter Abrechnung.</span><span data-lang="en">German-speaking partners in the DACH region refer founders, entrepreneurs and investors — with attractive commissions and transparent billing.</span></p>
+        <a href="https://www.pan21.org" target="_blank" rel="noopener" class="partner-card-link">→ pan21.org</a>
+      </div>
+    </div>
+
+    <div class="partner-img-row reveal">
+      <div class="partner-img-wrap">
+        <img src="img/tumisu-handshake-2998302.jpg" alt="PAN21 Partnernetzwerk – weltweite Zusammenarbeit" loading="lazy">
+      </div>
+      <div class="partner-img-wrap">
+        <img src="img/predragkezic-world-trade-center-582908.jpg" alt="PAN21 – weltweite Firmengründung und Partnerschaft" loading="lazy">
+      </div>
+    </div>
+
+    <div class="partner-cta reveal">
+      <h3><span data-lang="de">Partner werden — in 4 Schritten</span><span data-lang="en">Become a Partner — in 4 Steps</span></h3>
+      <p><span data-lang="de">Registrierung → Freischaltung → Vermittlung → Provision. Keine Einstiegsgebühr, kein Mindestvolumen. Beratungsgespräch jederzeit buchbar.</span><span data-lang="en">Register → Activation → Referral → Commission. No entry fee, no minimum volume. Consultation bookable at any time.</span></p>
+      <a href="https://www.pan21.org" target="_blank" rel="noopener" class="btn btn-gold" style="display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:#1a1410;padding:1rem 2.2rem;border-radius:4px;font-weight:700;text-decoration:none;font-size:.95rem;transition:background .2s">
+        <span data-lang="de">Jetzt Partner werden → pan21.org</span>
+        <span data-lang="en">Become a Partner → pan21.org</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════════════ TESTIMONIALS ══════════════════════ -->
 <section class="section section-dark3" aria-labelledby="testi-title">
   <div class="section-inner">
@@ -1175,6 +1353,8 @@ body.en [data-lang="en"]{display:block}
     </h2>
     <div class="kontakt-grid">
       <div>
+        <img src="img/652234-airport-4615371.jpg" alt="PAN21 – internationale Firmengründung, weltweite Präsenz" loading="lazy" class="kontakt-img reveal">
+        <img src="img/flutie8211-business-6851888.jpg" alt="PAN21 – professionelle Unternehmensberatung" loading="lazy" class="kontakt-img reveal">
         <p style="font-size:.86rem;color:rgba(255,255,255,.45);line-height:1.85;margin-bottom:2rem">
           <span data-lang="de">Alle Anfragen zur Firmengründung, zu Nominee Director, Treuhänder und Registered Office werden vertraulich behandelt. Wir antworten innerhalb von 24 Stunden. Keine E-Mail-Weitergabe, keine Werbung.</span>
           <span data-lang="en">All enquiries about company formation, Nominee Director, Trustee and Registered Office are treated confidentially. We respond within 24 hours. No email sharing, no advertising.</span>
@@ -1308,7 +1488,7 @@ body.en [data-lang="en"]{display:block}
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="footer-logo-text">PAN<span>21</span>.com</div>
+      <img src="logo.png" alt="PAN21.com" style="height:42px;width:auto;display:block;margin-bottom:1rem;opacity:.9">
       <p><span data-lang="de">Spezialist für internationale Firmengründungen seit 20+ Jahren. UK, USA, Irland, Deutschland, Hong Kong, Australien, Neuseeland, Belize, Nevis. Nominee Director, Treuhänder, Registered Office, Administration.</span><span data-lang="en">International company formation specialists for 20+ years. UK, USA, Ireland, Germany, Hong Kong, Australia, New Zealand, Belize, Nevis. Nominee Director, Trustee, Registered Office, Administration.</span></p>
     </div>
     <div class="footer-col">
