@@ -16,22 +16,23 @@ function isGibberish(str) {
   for (const word of words) {
     const letters = word.replace(/[^a-zA-ZäöüÄÖÜßàáâãåèéêëìíîïòóôõùúûýÀÁÂÃÅÈÉÊËÌÍÎÏÒÓÔÕÙÚÛÝ]/g, '');
     if (letters.length < 6) continue;
-
     let vowels = 0;
     for (const ch of letters) if (vowelChars.includes(ch)) vowels++;
     const vowelRatio = vowels / letters.length;
-
     let transitions = 0;
     for (let i = 1; i < letters.length; i++) {
       const prevUpper = letters[i - 1] === letters[i - 1].toUpperCase() && letters[i - 1] !== letters[i - 1].toLowerCase();
-      const curUpper  = letters[i]     === letters[i].toUpperCase()     && letters[i]     !== letters[i].toLowerCase();
+      const curUpper = letters[i] === letters[i].toUpperCase() && letters[i] !== letters[i].toLowerCase();
       if (prevUpper !== curUpper) transitions++;
     }
     const transitionRatio = transitions / (letters.length - 1);
-
-    if (vowelRatio < 0.2 && transitionRatio > 0.35) return true;
+    // Tiered threshold: longer strings need a less extreme vowel-ratio to be flagged,
+    // since genuine long words (esp. German compounds) always carry a healthy vowel
+    // share, while short strings need a stricter cutoff to avoid catching real
+    // camelCase brand names (McDonald, PayPal, JavaScript...).
+    const vowelThreshold = letters.length >= 14 ? 0.28 : (letters.length >= 11 ? 0.22 : 0.16);
+    if (vowelRatio < vowelThreshold && transitionRatio > 0.3) return true;
   }
-  // A single very long no-space token (however "wordlike") is also a bot tell.
   if (/\S{61,}/.test(str || '')) return true;
   return false;
 }
