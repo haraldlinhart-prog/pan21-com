@@ -10,6 +10,24 @@ const nodemailer = require('nodemailer');
 // are required together (not just one) specifically to avoid flagging real oddly-cased
 // words — "McDonald" or "PayPal" fail the case-switch check alone but have a normal
 // vowel ratio, so they correctly pass.
+// E-Mail-Blockliste — normalisiert Gmail-Punkte/Plus-Tags, damit Bots sie nicht
+// durch e.dip.a.ju.l.o.d.ev.8.5@gmail.com vs. ed.ip.ajulo.de.v85@gmail.com umgehen.
+const BLOCKED_EMAILS = new Set([
+  'edipajulodev85@gmail.com',
+]);
+function normalizeEmail(email) {
+  const e = (email || '').trim().toLowerCase();
+  const at = e.indexOf('@');
+  if (at === -1) return e;
+  let local = e.slice(0, at);
+  const domain = e.slice(at + 1);
+  local = local.split('+')[0];
+  if (domain === 'gmail.com' || domain === 'googlemail.com') {
+    local = local.replace(/\./g, '');
+  }
+  return local + '@' + (domain === 'googlemail.com' ? 'gmail.com' : domain);
+}
+
 function isGibberish(str) {
   const words = (str || '').split(/\s+/).filter(w => w.length >= 6);
   const vowelChars = 'aeiouyAEIOUYäöüÄÖÜàáâãåèéêëìíîïòóôõùúûýÀÁÂÃÅÈÉÊËÌÍÎÏÒÓÔÕÙÚÛÝ';
@@ -86,7 +104,7 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ ok: false, error: 'Bitte füllen Sie alle Pflichtfelder aus.' });
 
     // Gibberish-Erkennung (Bot-Zufallsstrings, auch kurze) — silent success, wie Honeypot/Timing
-    if (isGibberish(nachricht) || isGibberish(name)) {
+    if (isGibberish(nachricht) || isGibberish(name) || BLOCKED_EMAILS.has(normalizeEmail(email))) {
       return res.status(200).json({ ok: true });
     }
 
