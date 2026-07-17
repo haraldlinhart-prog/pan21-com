@@ -17,6 +17,9 @@ module.exports = async function handler(req, res) {
   const contact = body.customer_contact || 'unbekannt'
   const reason  = body.reason || '–'
   const channel = body.channel || 'Chat'
+  const convId  = body.conversation_id || null
+
+  console.log('DEBUG raw body:', JSON.stringify(body))
 
   const sms = [
     `🆘 Live-Support angefragt (${channel})`,
@@ -55,6 +58,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       message_for_customer: 'Ich habe unser Team informiert, jemand meldet sich in Kürze bei Ihnen.',
+      debug_conversation_id_received: convId,
     })
   } catch (err) {
     console.error('Handoff SMS error:', err.message)
