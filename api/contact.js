@@ -14,6 +14,7 @@ const nodemailer = require('nodemailer');
 // durch e.dip.a.ju.l.o.d.ev.8.5@gmail.com vs. ed.ip.ajulo.de.v85@gmail.com umgehen.
 const BLOCKED_EMAILS = new Set([
   'edipajulodev85@gmail.com',
+  'sukitolog50@gmail.com',
 ]);
 function normalizeEmail(email) {
   const e = (email || '').trim().toLowerCase();
