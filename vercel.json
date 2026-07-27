@@ -1,0 +1,11 @@
+{"redirects":[
+  {"source":"/firmengruendung-online-angebote","destination":"/","permanent":true},
+  {"source":"/gruendung","destination":"/","permanent":true},
+  {"source":"/firmengruendung-white-label","destination":"/","permanent":true},
+  {"source":"/vorteile-ug","destination":"/","permanent":true},
+  {"source":"/en","destination":"/","permanent":true},
+  {"source":"/de/home","destination":"/","permanent":true},
+  {"source":"/online-angebote","destination":"/","permanent":true},
+  {"source":"/home","destination":"/","permanent":true},
+  {"source":"/de","destination":"/","permanent":true}
+]}
