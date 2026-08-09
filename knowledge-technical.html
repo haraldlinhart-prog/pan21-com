@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Technische Betriebsnotizen | PAN21.com</title>
+<meta name="description" content="Interne technische Referenz. Nicht für die öffentliche Suche bestimmt.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://www.pan21.com/knowledge-technical.html">
+
+<!-- Diese Seite ist bewusst NICHT von knowledge.html verlinkt und trägt noindex,
+     damit sie nicht von Suchmaschinen oder öffentlichen Crawlern gefunden wird.
+     Nur über die direkte URL erreichbar. -->
+
+<style>
+:root{--ink:#0d1f3c;--ink-soft:#4a5a78;--paper:#fdfdfc;--card:#ffffff;--line:#e6e9f0;--gold:#c9a84c;--radius:14px;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Georgia',serif;line-height:1.7;font-size:16px;}
+.wrap{max-width:840px;margin:0 auto;padding:0 24px;}
+header{background:var(--ink);padding:20px 0;}
+header .wrap{display:flex;align-items:center;justify-content:space-between;}
+header a.brand{color:#fff;text-decoration:none;font-weight:700;font-size:18px;letter-spacing:.02em;}
+header a.brand span{color:var(--gold);}
+.hero{padding:36px 0 20px;border-bottom:1px solid var(--line);}
+.hero .eyebrow{font-family:Arial,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#c0392b;}
+.hero h1{font-size:clamp(24px,4vw,32px);margin:10px 0 10px;}
+.hero p.lead{color:var(--ink-soft);font-size:15.5px;max-width:64ch;}
+.warn{background:#fdf1ed;border:1px solid #e8c4b8;border-radius:var(--radius);padding:14px 18px;font-family:Arial,sans-serif;font-size:13.5px;color:#7a3520;margin:20px 0;}
+section.block{padding:30px 0;border-bottom:1px solid var(--line);}
+section.block h2{font-size:19px;margin:0 0 14px;}
+table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;margin:14px 0;}
+table th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);}
+table td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+.status-ok{color:#1a7a3c;font-weight:700;}
+.status-fail{color:#c0392b;font-weight:700;}
+.updated{font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink-soft);margin-top:10px;}
+footer{padding:28px 0;text-align:center;font-family:Arial,sans-serif;font-size:12px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="/">PAN21<span>.com</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Intern &middot; noindex</span>
+    <h1>Technische Betriebsnotizen</h1>
+    <p class="lead">Diese Seite ist ausschließlich für internen Gebrauch. Sie ist nicht verlinkt und wird von Suchmaschinen nicht indexiert.</p>
+    <div class="warn">Nicht öffentlich verlinken. Keine Weitergabe des URL-Pfads außerhalb des Teams.</div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>SMS-fähige Twilio-Nummern (getestet 09.08.2026)</h2>
+  <table>
+    <thead><tr><th>Nummer</th><th>Herkunft</th><th>SMS → Deutschland</th><th>SMS → UK</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>+44 7700 175885</td>
+        <td>UK, mobil</td>
+        <td>ungetestet, vermutlich ok</td>
+        <td class="status-ok">bestätigt funktionsfähig</td>
+      </tr>
+      <tr>
+        <td>+1 954 516-1442</td>
+        <td>USA (Fort Lauderdale, Florida), lokal</td>
+        <td class="status-ok">bestätigt funktionsfähig</td>
+        <td class="status-fail">fehlgeschlagen (Twilio-Fehler 21612)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink-soft);">Fehler 21612 deutet auf eine länderspezifische Routing-/Berechtigungssperre bei Twilio hin (US→UK), keine generelle internationale SMS-Sperre — US→DE funktioniert einwandfrei. Bei Bedarf für weitere Zielländer jeweils gezielt testen, bevor eine Nummer in einem neuen Famulor-/Twilio-Setup als SMS-Absender eingeplant wird.</p>
+  <p class="updated">Zuletzt getestet: 9. August 2026, Twilio-Hauptkonto (Account-ID bei Harry erfragen).</p>
+</section>
+
+<footer>
+  <div class="wrap">Intern &middot; PAN21.com &middot; nicht indexiert</div>
+</footer>
+
+</body>
+</html>
