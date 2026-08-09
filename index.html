@@ -393,18 +393,19 @@ nav{
 
 /* Hero right: globe visual */
 .globe-visual{
-  display:grid;grid-template-columns:1fr 1fr;gap:.7rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:.5rem;
+  max-width:340px;margin-left:0;margin-right:auto;
 }
 .gv-card{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  padding:1.1rem;transition:border-color var(--trans),background var(--trans);
-  cursor:default;
+  background:rgba(10,8,6,.55);border:1px solid var(--border);
+  padding:.65rem .75rem;transition:border-color var(--trans),background var(--trans);
+  cursor:default;backdrop-filter:blur(2px);
 }
-.gv-card:hover{border-color:rgba(201,168,76,.35);background:rgba(201,168,76,.05)}
-.gv-flag{font-size:1.3rem;margin-bottom:.4rem}
-.gv-country{font-family:var(--ff-d);font-size:.9rem;font-weight:700;color:var(--white)}
-.gv-form{font-size:.62rem;color:rgba(255,255,255,.38);margin-top:.15rem;letter-spacing:.04em}
-.gv-badge{display:inline-block;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.25);padding:.15rem .5rem;margin-top:.4rem}
+.gv-card:hover{border-color:rgba(201,168,76,.35);background:rgba(201,168,76,.12)}
+.gv-flag{font-size:1rem;margin-bottom:.25rem}
+.gv-country{font-family:var(--ff-d);font-size:.74rem;font-weight:700;color:var(--white)}
+.gv-form{font-size:.54rem;color:rgba(255,255,255,.4);margin-top:.1rem;letter-spacing:.03em}
+.gv-badge{display:inline-block;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.25);padding:.1rem .4rem;margin-top:.3rem}
 
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr}
