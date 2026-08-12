@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Offene Projekte</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; padding: 24px 16px 60px;
+    background: #0b0d12; color: #f0f2f5; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.3rem; font-weight: 700; color: #f0f2f5; margin: 0 0 4px; }
+  .sub { font-size: 0.85rem; color: #6b7484; margin: 0 0 24px; }
+  .card {
+    background: #171a21; border: 1px solid #262b36; border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 14px;
+  }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .card-title { font-size: 1.02rem; font-weight: 700; color: #f0f2f5; }
+  .card-since { font-size: 0.75rem; color: #565d6b; white-space: nowrap; }
+  .card-wait { font-size: 0.9rem; color: #9aa3b2; margin-top: 6px; line-height: 1.4; }
+  .badge {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: .03em;
+    padding: 3px 9px; border-radius: 999px; margin-top: 10px;
+  }
+  .badge.wait { background: #3a2f14; color: #e0b84a; }
+  .badge.self { background: #1a2e1f; color: #4fbf6b; }
+  .updated { font-size: 0.75rem; color: #444a56; text-align: center; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Offene Projekte / Warte auf Reaktion</h1>
+  <p class="sub">Statusliste – täglich durchgehen, damit nichts liegen bleibt.</p>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">CorpTools / RegisteredAgents API</div>
+      <div class="card-since">seit 21.07.26</div>
+    </div>
+    <div class="card-wait">american-llc.org, amerikanische-llc.de, einfach-llc.de — Integration blockiert bis IP-Whitelisting erfolgt.</div>
+    <span class="badge wait">WARTET AUF: John / corporatetools.com (3 Vercel-IPs freischalten)</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">kanzlei-boersenplatz.de – Impressum</div>
+      <div class="card-since">seit 30.07.26</div>
+    </div>
+    <div class="card-wait">Wartet auf Gründungsurkunde PAN21.com Services LLC.</div>
+    <span class="badge wait">WARTET AUF: John (Anwalt Florida)</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">kanzlei-seuss.de – Logo</div>
+      <div class="card-since">offen</div>
+    </div>
+    <div class="card-wait">Gold/Weiß-Version des Logos noch nicht erhalten.</div>
+    <span class="badge wait">WARTET AUF: Stefan Seuß</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">gmbh-krise.de</div>
+      <div class="card-since">laufend</div>
+    </div>
+    <div class="card-wait">Phase 3+ läuft. Offen: Verweis auf Erics 5 Referenzdomains? Übernahme von Inhalten von erickratzer.de (braucht Freigabe)?</div>
+    <span class="badge wait">WARTET AUF: Eric Kratzer (fachliche Substanz)</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">elster-automation</div>
+      <div class="card-since">laufend</div>
+    </div>
+    <div class="card-wait">Partner-Steuerberater für Kanzlei Seuß gesucht. Echte Firmendaten (Steuernummern etc.) noch Platzhalter.</div>
+    <span class="badge self">EIGENE AUFGABE: Firmendaten eintragen + ELSTER-Registrierung</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">WBS Suisse GmbH (München)</div>
+      <div class="card-since">neu</div>
+    </div>
+    <div class="card-wait">Ergebnis Geschäftskonto-Eröffnung (Harry selbst / Brudek-Kontakt) offen. Vertretungsnachweise DOCAPIS bei Frau Dr. Funke in Prüfung.</div>
+    <span class="badge wait">WARTET AUF: Bank + Frau Dr. Funke</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">abmahnschutz.pro</div>
+      <div class="card-since">seit 31.07.26</div>
+    </div>
+    <div class="card-wait">Ungeklärt ob Vercel-Import / Domain-Verknüpfung überhaupt erfolgt ist.</div>
+    <span class="badge self">EIGENE AUFGABE: selbst prüfen</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">banking.pan21.com – Revolut OAuth</div>
+      <div class="card-since">offen</div>
+    </div>
+    <div class="card-wait">OAuth-Flow muss von Harry selbst gestartet werden (Biometrie-Verifikation nötig).</div>
+    <span class="badge self">EIGENE AUFGABE: Harry (OAuth-Flow + Biometrie)</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Famulor – SMS Terminlink</div>
+      <div class="card-since">offen</div>
+    </div>
+    <div class="card-wait">+441544304300 ist nicht SMS-fähig (Error 21661). Entscheidung: SMS-fähige Twilio-Nummer kaufen oder anderen Provider nutzen.</div>
+    <span class="badge self">EIGENE AUFGABE: Entscheidung + Kauf</span>
+  </div>
+
+  <p class="updated">Stand: 12.08.2026 — wird bei jeder Durchsprache aktualisiert.</p>
+</div>
+</body>
+</html>
