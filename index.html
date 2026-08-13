@@ -332,10 +332,10 @@ nav{
 .hero{
   min-height:100vh;display:flex;align-items:center;
   padding:0 clamp(1rem,4vw,3rem);
-  background:var(--black) url('https://www.pan21.com/assets/hero-international.jpg') center center/cover no-repeat;
+  background:var(--black);
   position:relative;overflow:hidden;
 }
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.35;}
+.hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:1;filter:brightness(1.15);}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(10,8,6,.32) 0%,rgba(10,8,6,.1) 50%,rgba(10,8,6,.28) 100%);}
 .hero::before{
   content:'';position:absolute;inset:0;z-index:2;
@@ -830,6 +830,7 @@ body.en [data-lang="en"]{display:block}
 
 <!-- ══════════════════════ HERO ══════════════════════ -->
 <section class="hero" id="hero" aria-label="Weltweite Firmengründung – PAN21">
+  <img class="hero-media" src="assets/hero-pan21-trust-network.jpg" alt="Globales Compliance- und Treuhandnetzwerk – Firmengründung weltweit" loading="eager" width="1672" height="941">
   <div class="hero-overlay"></div>
   <div class="hero-inner">
     <div>
