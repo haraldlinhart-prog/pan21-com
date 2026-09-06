@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny-ps" viewBox="0 0 520 520" width="520" height="520" overflow="visible">
+<title>PAN21</title>
+<desc>PAN21 Markenlogo</desc>
+<defs>
+<clipPath id="pan21IconClip">
+<rect x="0" y="0" width="400" height="400" rx="96.77" ry="96.77"/>
+</clipPath>
+</defs>
+<rect x="0" y="0" width="520" height="520" fill="#FFFFFF"/>
+<g transform="translate(60,60)" clip-path="url(#pan21IconClip)">
+<path fill="#05CEAA" fill-rule="evenodd" d="M0,0 H200 V400 H0 Z M96.77,90.32 H200 V187.10 H96.77 Z"/>
+<path fill="#AAAAAA" fill-rule="evenodd" d="M200,0 H400 V400 H200 Z M200,212.90 H303.23 V309.68 H200 Z"/>
+</g>
+</svg>
