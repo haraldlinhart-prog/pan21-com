@@ -2,115 +2,161 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Präsenz-Schalter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standort</title>
 <style>
-  * { box-sizing: border-box; }
   body {
-    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 20px; padding: 24px;
-    background: #0b0d12; color: #f0f2f5; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f4f5f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 32px 40px;
     text-align: center;
+    min-width: 280px;
   }
-  h1 { font-size: 1.1rem; font-weight: 600; color: #9aa3b2; margin: 0 0 8px; }
-  #status { font-size: 1rem; color: #6b7484; margin-bottom: 12px; min-height: 1.4em; }
-  .btn {
-    width: 100%; max-width: 340px; padding: 26px 20px; font-size: 1.3rem; font-weight: 700;
-    border: none; border-radius: 16px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  h1 {
+    font-size: 16px;
+    color: #444;
+    margin: 0 0 20px;
+    font-weight: 600;
   }
-  #onBtn { background: #1f9d55; color: #fff; }
-  #offBtn { background: #2a2f3a; color: #f0f2f5; }
-  #pwWrap { display: none; flex-direction: column; gap: 10px; width: 100%; max-width: 340px; }
-  #pwWrap input {
-    padding: 14px; border-radius: 10px; border: 1px solid #333; background: #171a21; color: #fff; font-size: 1rem;
+  .switch-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
   }
-  #pwWrap button { padding: 14px; border-radius: 10px; border: none; background: #3a6ff7; color: #fff; font-size: 1rem; font-weight: 600; }
-  .msg { font-size: 0.85rem; color: #6b7484; margin-top: 8px; }
+  .label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #999;
+    transition: color 0.2s;
+  }
+  .label.active {
+    color: #222;
+  }
+  .switch {
+    position: relative;
+    width: 60px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #4a90d9;
+    transition: 0.3s;
+    border-radius: 32px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  input:checked + .slider {
+    background-color: #e0673f;
+  }
+  input:checked + .slider:before {
+    transform: translateX(28px);
+  }
+  .status {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #999;
+    min-height: 16px;
+  }
+  .status.error {
+    color: #c0392b;
+  }
 </style>
 </head>
 <body>
-  <h1>PAN21 Bestell-Zentrale</h1>
-  <div id="status">Lade Status…</div>
 
-  <button class="btn" id="onBtn">Bin da 🟢</button>
-  <button class="btn" id="offBtn">Bin weg ⚫</button>
-
-  <div id="pwWrap">
-    <input type="password" id="pw" placeholder="Passwort" autocomplete="current-password">
-    <button id="pwSubmit">Bestätigen</button>
+<div class="card">
+  <h1>Aktueller Standort</h1>
+  <div class="switch-wrap">
+    <span class="label" id="label-de">Deutschland</span>
+    <label class="switch">
+      <input type="checkbox" id="toggle">
+      <span class="slider"></span>
+    </label>
+    <span class="label" id="label-th">Thailand</span>
   </div>
-  <div class="msg" id="msg"></div>
+  <div class="status" id="status">wird geladen…</div>
+</div>
 
 <script>
-  const statusEl = document.getElementById('status');
-  const msgEl = document.getElementById('msg');
-  const pwWrap = document.getElementById('pwWrap');
-  const pwInput = document.getElementById('pw');
-  let pendingState = null;
+const toggle = document.getElementById('toggle');
+const labelDE = document.getElementById('label-de');
+const labelTH = document.getElementById('label-th');
+const statusEl = document.getElementById('status');
 
-  // Passwort wird NICHT dauerhaft gespeichert (kein localStorage) - nur
-  // fuer die Dauer der Session im Speicher, damit man es nicht bei jedem
-  // Klick neu eintippen muss.
-  let sessionSecret = null;
+function reflect(location) {
+  toggle.checked = (location === 'TH');
+  labelDE.classList.toggle('active', location === 'DE');
+  labelTH.classList.toggle('active', location === 'TH');
+}
 
-  async function loadStatus() {
-    try {
-      const r = await fetch('/api/presence', { cache: 'no-store' });
-      const d = await r.json();
-      statusEl.textContent = d.at_desk
-        ? '🟢 Aktuell: Am Schreibtisch'
-        : '⚫ Aktuell: Nicht am Schreibtisch';
-    } catch {
-      statusEl.textContent = 'Status konnte nicht geladen werden';
-    }
+async function loadStatus() {
+  try {
+    const res = await fetch('/api/presence');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    reflect(data.location);
+    statusEl.classList.remove('error');
+    statusEl.textContent = 'Gespeichert';
+  } catch (err) {
+    statusEl.classList.add('error');
+    statusEl.textContent = 'Fehler beim Laden: ' + err.message;
   }
+}
 
-  function askPasswordThenSend(atDesk) {
-    pendingState = atDesk;
-    if (sessionSecret) {
-      send(atDesk, sessionSecret);
-      return;
-    }
-    pwWrap.style.display = 'flex';
-    pwInput.focus();
+async function setStatus(location) {
+  statusEl.classList.remove('error');
+  statusEl.textContent = 'Speichere…';
+  try {
+    const res = await fetch('/api/presence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ location })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    reflect(location);
+    statusEl.textContent = 'Gespeichert';
+  } catch (err) {
+    statusEl.classList.add('error');
+    statusEl.textContent = 'Fehler beim Speichern: ' + err.message;
+    loadStatus(); // reset to actual server state
   }
+}
 
-  async function send(atDesk, secret) {
-    msgEl.textContent = 'Wird gespeichert…';
-    try {
-      const r = await fetch('/api/presence', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ at_desk: atDesk, secret }),
-      });
-      if (r.status === 401) {
-        msgEl.textContent = 'Falsches Passwort.';
-        sessionSecret = null;
-        pwWrap.style.display = 'flex';
-        return;
-      }
-      if (!r.ok) throw new Error();
-      sessionSecret = secret;
-      pwWrap.style.display = 'none';
-      pwInput.value = '';
-      msgEl.textContent = 'Gespeichert.';
-      await loadStatus();
-    } catch {
-      msgEl.textContent = 'Fehler beim Speichern, bitte nochmal versuchen.';
-    }
-  }
+toggle.addEventListener('change', () => {
+  setStatus(toggle.checked ? 'TH' : 'DE');
+});
 
-  document.getElementById('onBtn').addEventListener('click', () => askPasswordThenSend(true));
-  document.getElementById('offBtn').addEventListener('click', () => askPasswordThenSend(false));
-  document.getElementById('pwSubmit').addEventListener('click', () => {
-    if (pendingState === null) return;
-    send(pendingState, pwInput.value);
-  });
-  pwInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') document.getElementById('pwSubmit').click();
-  });
-
-  loadStatus();
+loadStatus();
 </script>
+
 </body>
 </html>
