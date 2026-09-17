@@ -1,52 +1,81 @@
 // api/presence.js
-// "Bin ich am Schreibtisch?"-Schalter. GET ist oeffentlich und wird von
-// Famulor (Zentrale-Assistent) vor jedem warm_call_transfer abgefragt, um zu
-// entscheiden, ob ein Durchstellversuch zu Harry ueberhaupt sinnvoll ist.
-// POST setzt den Status, geschuetzt durch ein Secret (PRESENCE_SECRET),
-// gedacht fuer die kleine Toggle-Seite presence.html.
+// Vercel Serverless Function — liest/schreibt den aktuellen Standort (DE/TH)
+// in der Supabase-Tabelle "harry_presence" (Spalte "location", Check-Constraint 'DE'/'TH').
+//
+// Benötigte Environment Variables in Vercel (Project Settings → Environment Variables):
+//   SUPABASE_URL              — z.B. https://xxxxx.supabase.co
+//   SUPABASE_SERVICE_ROLE_KEY — der Service-Role-Key (NICHT der anon/public key,
+//                                da hier serverseitig geschrieben wird)
+//
+// Falls das Projekt stattdessen andere Variablennamen verwendet (z.B. SUPABASE_SERVICE_KEY),
+// einfach unten in den Fallbacks ergänzen oder in Vercel umbenennen.
 
-const SUPABASE_URL = 'https://frbvsdumltlzisddrlbi.supabase.co'
-const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZyYnZzZHVtbHRsemlzZGRybGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNTk4NDQsImV4cCI6MjA5NzgzNTg0NH0.8Vrrs8tIyjdGrD3xGoQ3lkpv4G3LBvy4bpeXpaQ8OGY'
+const { createClient } = require('@supabase/supabase-js');
 
-module.exports = async function handler(req, res) {
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY ||
+  process.env.SUPABASE_ANON_KEY;
+
+let supabase = null;
+if (SUPABASE_URL && SUPABASE_KEY) {
+  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
+// Es wird von genau einer Zeile in harry_presence ausgegangen (Single-Row-Status).
+// Falls die Tabelle stattdessen über eine feste ID identifiziert wird, hier anpassen.
+const ROW_ID = 1;
+
+module.exports = async (req, res) => {
+  if (!supabase) {
+    res.status(500).json({
+      error: 'Supabase ist nicht konfiguriert (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY fehlen in den Vercel Environment Variables).'
+    });
+    return;
+  }
+
   if (req.method === 'GET') {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/harry_presence?id=eq.1&select=at_desk,updated_at`, {
-      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
-    })
-    const rows = await r.json()
-    const row = rows[0] || { at_desk: false, updated_at: null }
-    res.setHeader('Cache-Control', 'no-store')
-    return res.status(200).json({ at_desk: !!row.at_desk, updated_at: row.updated_at })
+    try {
+      const { data, error } = await supabase
+        .from('harry_presence')
+        .select('location')
+        .eq('id', ROW_ID)
+        .single();
+
+      if (error) throw error;
+
+      res.status(200).json({ location: data.location });
+    } catch (err) {
+      res.status(500).json({ error: 'Fehler beim Laden: ' + err.message });
+    }
+    return;
   }
 
   if (req.method === 'POST') {
-    let body = req.body
-    if (typeof body === 'string') { try { body = JSON.parse(body) } catch { body = {} } }
+    try {
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const location = body && body.location;
 
-    const secret = process.env.PRESENCE_SECRET
-    if (!secret || body.secret !== secret) {
-      return res.status(401).json({ error: 'Nicht autorisiert' })
-    }
-    if (typeof body.at_desk !== 'boolean') {
-      return res.status(400).json({ error: 'at_desk (boolean) ist erforderlich' })
-    }
+      if (location !== 'DE' && location !== 'TH') {
+        res.status(400).json({ error: "location muss 'DE' oder 'TH' sein" });
+        return;
+      }
 
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/harry_presence?id=eq.1`, {
-      method: 'PATCH',
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json',
-        Prefer: 'return=representation',
-      },
-      body: JSON.stringify({ at_desk: body.at_desk, updated_at: new Date().toISOString() }),
-    })
-    if (!r.ok) {
-      return res.status(502).json({ error: 'Presence-Update fehlgeschlagen' })
+      const { error } = await supabase
+        .from('harry_presence')
+        .update({ location })
+        .eq('id', ROW_ID);
+
+      if (error) throw error;
+
+      res.status(200).json({ location });
+    } catch (err) {
+      res.status(500).json({ error: 'Fehler beim Speichern: ' + err.message });
     }
-    return res.status(200).json({ ok: true, at_desk: body.at_desk })
+    return;
   }
 
-  return res.status(405).end()
-}
+  res.setHeader('Allow', ['GET', 'POST']);
+  res.status(405).json({ error: `Methode ${req.method} nicht erlaubt` });
+};
