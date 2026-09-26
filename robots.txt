@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.pan21.com/sitemap.xml
+Sitemap: https://www.pan21.com/sitemap-blog.xml
