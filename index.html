@@ -196,24 +196,8 @@
 }
 </script>
 
-<!-- Matomo -->
-<script>
-  var _paq = window._paq = window._paq || [];
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="//counter.ixan.org/";
-    _paq.push(['setTrackerUrl', u+'matomo.php']);
-    _paq.push(['setSiteId', '14']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-
 <!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 
 <style>
 /* ─── TOKENS ──────────────────────────────────────────────── */
@@ -303,31 +287,6 @@ nav{
   .nav-cta{margin-top:.5rem;display:inline-block;width:fit-content}
   .lang-grp{border:none;padding-left:0;margin-top:.5rem}
 }
-
-/* ─── COOKIE BANNER ───────────────────────────────────────── */
-.cookie-banner{
-  position:fixed;bottom:0;left:0;right:0;z-index:200;
-  background:#0d1117;border-top:1px solid var(--border);
-  padding:1rem clamp(1rem,4vw,3rem);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:1.5rem;flex-wrap:wrap;
-}
-.cookie-banner p{font-size:.74rem;color:rgba(255,255,255,.42);line-height:1.6;max-width:700px}
-.cookie-banner a,.cookie-banner button.link{color:var(--gold);text-decoration:none;background:none;border:none;cursor:pointer;font-family:var(--ff-b);font-size:inherit;padding:0}
-.cookie-btns{display:flex;gap:.8rem;flex-shrink:0}
-.cookie-accept{
-  background:var(--gold);color:var(--black);border:none;
-  padding:.5rem 1.4rem;font-size:.68rem;letter-spacing:.1em;
-  font-family:var(--ff-b);font-weight:700;cursor:pointer;transition:background var(--trans);
-}
-.cookie-accept:hover{background:var(--gold-lt)}
-.cookie-decline{
-  background:transparent;color:rgba(255,255,255,.35);
-  border:1px solid rgba(255,255,255,.12);padding:.5rem 1.4rem;
-  font-size:.68rem;letter-spacing:.1em;font-family:var(--ff-b);cursor:pointer;transition:all var(--trans);
-}
-.cookie-decline:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
-
 /* ─── HERO ────────────────────────────────────────────────── */
 .hero{
   min-height:100vh;display:flex;align-items:center;
@@ -792,16 +751,6 @@ body.en [data-lang="en"]{display:block}
 </style>
 </head>
 <body>
-
-<!-- ══════════════════════ COOKIE BANNER ══════════════════════ -->
-<div class="cookie-banner" id="cookieBanner">
-  <p data-lang="de">Diese Website verwendet Matomo Analytics (selbst gehostet, counter.ixan.org) zur anonymen Nutzungsanalyse. Ihre IP-Adresse wird anonymisiert. Keine Weitergabe an Dritte. <button class="link" onclick="showLegal('datenschutz')">Datenschutz</button></p>
-  <p data-lang="en">This site uses self-hosted Matomo Analytics (counter.ixan.org) for anonymous usage analysis. Your IP is anonymised. No data shared with third parties. <button class="link" onclick="showLegal('datenschutz')">Privacy Policy</button></p>
-  <div class="cookie-btns">
-    <button class="cookie-accept" onclick="acceptCookies()"><span data-lang="de">Akzeptieren</span><span data-lang="en">Accept</span></button>
-    <button class="cookie-decline" onclick="declineCookies()"><span data-lang="de">Ablehnen</span><span data-lang="en">Decline</span></button>
-  </div>
-</div>
 
 <!-- ══════════════════════ NAV ══════════════════════ -->
 <nav>
@@ -1767,14 +1716,11 @@ body.en [data-lang="en"]{display:block}
       <p>PAN21.COM Corporate Consultants Ltd, 61 Bridge Street, Kington, Herefordshire, England<br>E-Mail: <a href="mailto:support@pan21.com">support@pan21.com</a></p>
       <h3>2. Datenerfassung</h3>
       <p>Beim Besuch dieser Website werden automatisch Server-Logfile-Informationen erfasst (Browsertyp, Betriebssystem, Referrer-URL, anonymisierte IP-Adresse). Diese Daten sind keiner bestimmten Person zuordenbar.</p>
-      <h3>3. Matomo</h3>
-      <p>Diese Website verwendet Matomo, betrieben auf eigenem Server (counter.ixan.org, Site ID: 14) — keine Übermittlung an Dritte. IP-Anonymisierung aktiv. Matomo wird erst nach Ihrer Einwilligung aktiviert.</p>
-      <p><button onclick="matomoOptOut()" style="background:transparent;border:1px solid rgba(201,168,76,.35);color:var(--gold);padding:8px 18px;font-size:.72rem;letter-spacing:.1em;cursor:pointer;font-family:inherit">Matomo-Tracking deaktivieren</button></p>
-      <h3>4. Cookies</h3>
-      <p>Technisch notwendige Cookies sind immer aktiv. Analyse-Cookies (Matomo) nur nach Einwilligung.</p>
-      <h3>5. Kontaktformular</h3>
+      <h3>3. Cookies</h3>
+      <p>Technisch notwendige Cookies sind immer aktiv.</p>
+      <h3>4. Kontaktformular</h3>
       <p>Übermittelte Daten werden zur Bearbeitung Ihrer Anfrage gespeichert (Art. 6 Abs. 1 lit. b DSGVO). Keine Weitergabe an Dritte.</p>
-      <h3>6. Ihre Rechte</h3>
+      <h3>5. Ihre Rechte</h3>
       <p>Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20), Widerspruch (Art. 21 DSGVO). Beschwerden: <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a></p>
     </div>
     <div data-lang="en">
@@ -1783,14 +1729,11 @@ body.en [data-lang="en"]{display:block}
       <p>PAN21.COM Corporate Consultants Ltd, 61 Bridge Street, Kington, Herefordshire, England<br>Email: <a href="mailto:support@pan21.com">support@pan21.com</a></p>
       <h3>2. Data Collection</h3>
       <p>When visiting this website, server log information is automatically collected (browser type, OS, referrer URL, anonymised IP address). This data cannot be attributed to any specific person.</p>
-      <h3>3. Matomo</h3>
-      <p>This website uses Matomo, operated on our own server (counter.ixan.org, Site ID: 14) — no third-party transmission. IP anonymisation active. Matomo is only activated after your consent.</p>
-      <p><button onclick="matomoOptOut()" style="background:transparent;border:1px solid rgba(201,168,76,.35);color:var(--gold);padding:8px 18px;font-size:.72rem;letter-spacing:.1em;cursor:pointer;font-family:inherit">Disable Matomo Tracking</button></p>
-      <h3>4. Cookies</h3>
-      <p>Technically necessary cookies are always active. Analytics cookies (Matomo) only with consent.</p>
-      <h3>5. Contact Form</h3>
+      <h3>3. Cookies</h3>
+      <p>Technically necessary cookies are always active.</p>
+      <h3>4. Contact Form</h3>
       <p>Data submitted is stored to process your enquiry (Art. 6(1)(b) GDPR). No disclosure to third parties.</p>
-      <h3>6. Your Rights</h3>
+      <h3>5. Your Rights</h3>
       <p>Access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction (Art. 18), portability (Art. 20), objection (Art. 21 GDPR). Complaints: <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a></p>
     </div>
   </div>
@@ -1800,28 +1743,6 @@ body.en [data-lang="en"]{display:block}
 
 <!-- ══════════════════════ SCRIPTS ══════════════════════ -->
 <script>
-/* ── Cookie / Matomo ──────────────────────────────── */
-function acceptCookies(){
-  localStorage.setItem('pan21_consent','accepted');
-  document.getElementById('cookieBanner').style.display='none';
-  if(typeof _paq!=='undefined') _paq.push(['setConsentGiven']);
-}
-function declineCookies(){
-  localStorage.setItem('pan21_consent','declined');
-  document.getElementById('cookieBanner').style.display='none';
-}
-function matomoOptOut(){
-  if(typeof _paq!=='undefined') _paq.push(['forgetConsentGiven']);
-  localStorage.setItem('pan21_consent','declined');
-  var isEN=document.body.classList.contains('en');
-  alert(isEN?'Matomo tracking has been disabled.':'Matomo-Tracking wurde deaktiviert.');
-}
-(function(){
-  var c=localStorage.getItem('pan21_consent');
-  if(c==='accepted'){document.getElementById('cookieBanner').style.display='none';if(typeof _paq!=='undefined')_paq.push(['setConsentGiven']);}
-  else if(c==='declined'){document.getElementById('cookieBanner').style.display='none';}
-})();
-
 /* ── Language ─────────────────────────────────────── */
 function setLang(lang){
   document.body.classList.toggle('en',lang==='en');
@@ -1930,22 +1851,6 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
   });
 });
 </script>
-<!-- Statcounter -->
-<script type="text/javascript">
-var sc_project=10294927; 
-var sc_invisible=1; 
-var sc_security="8b83e41d"; 
-</script>
-<script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js"
-async></script>
-<noscript><div class="statcounter"><a title="Web Analytics"
-href="https://statcounter.com/" target="_blank"><img
-class="statcounter"
-src="https://c.statcounter.com/10294927/0/8b83e41d/1/"
-alt="Web Analytics"
-referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
-<!-- End of Statcounter Code -->
 
 <!-- BEEHIIV:START -->
 
