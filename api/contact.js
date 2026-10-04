@@ -166,7 +166,7 @@ ${safeNachricht}</div>
 <p>Telefonisch erreichbar: <strong>030 – 568 44 500</strong><br>
 Online-Termin: <a href="https://telefon-termin.com/beratung/">telefon-termin.com/beratung/</a></p>
 <div class="ft">PAN21.COM Corporate Consultants Ltd · 61 Bridge Street, Kington, Herefordshire, England<br>
-<a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://pan21.com">pan21.com</a><br><br>
+<a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://www.pan21.com">pan21.com</a><br><br>
 Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese Nachricht antworten.</div>
 </div></body></html>`
     });

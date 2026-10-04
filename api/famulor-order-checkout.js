@@ -57,7 +57,7 @@ a{color:#c9a84c}
 <a class="btn" href="${checkoutUrl}">Jetzt bezahlen</a>
 <p>Nach erfolgreicher Zahlung erhalten Sie automatisch eine Bestätigung und den Fragebogen für die nächsten Schritte.</p>
 <div class="ft">PAN21.COM Corporate Consultants Ltd · 61 Bridge Street, Kington, Herefordshire, England<br>
-<a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://pan21.com">pan21.com</a></div>
+<a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://www.pan21.com">pan21.com</a></div>
 </div></body></html>`,
   })
 }
