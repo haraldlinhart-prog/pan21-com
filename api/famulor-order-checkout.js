@@ -7,20 +7,10 @@
 // und schickt diesen Link per SMS ODER E-Mail an den Kunden, je nach
 // gewünschtem delivery_method. SMS nutzt dieselben Twilio-Zugangsdaten
 // wie famulor-notify.js / famulor-handoff.js. E-Mail nutzt dasselbe
-// SMTP-Konto (mail.pan21.com) wie contact.js.
+// E-Mail-Versand über Resend wie contact.js (api/_mail.js).
 
-const nodemailer = require('nodemailer')
 
-const mailTransporter = nodemailer.createTransport({
-  host:   'mail.pan21.com',
-  port:   465,
-  secure: true,
-  auth: {
-    user: 'mail@pan21.com',
-    pass: process.env.SMTP_PASS || 'Pan21003jomtien',
-  },
-  tls: { rejectUnauthorized: false },
-})
+const mailTransporter = require("./_mail");
 
 async function sendCheckoutEmail(email, checkoutUrl) {
   await mailTransporter.sendMail({

@@ -1,8 +1,7 @@
 // api/contact.js – PAN21 Kontaktformular
-// Vercel Serverless Function mit Nodemailer
+// Vercel Serverless Function, E-Mail-Versand über Resend (api/_mail.js)
 // Spam-Schutz: Honeypot + Zeitprüfung + Rate-Limit + Gibberish-Erkennung
 
-const nodemailer = require('nodemailer');
 
 // Catches bot-generated random tokens like "WXQnZcxqFFurVSKaEGSBzeH" that are short
 // enough to slide past a simple length check but look nothing like a real word/name:
@@ -78,17 +77,8 @@ function isRateLimited(ip) {
   return hits.length > RATE_MAX;
 }
 
-// ── SMTP Transporter ────────────────────────────────────────────
-const transporter = nodemailer.createTransport({
-  host:   'mail.pan21.com',
-  port:   465,
-  secure: true,
-  auth: {
-    user: 'mail@pan21.com',
-    pass: process.env.SMTP_PASS || 'Pan21003jomtien',
-  },
-  tls: { rejectUnauthorized: false },
-});
+// ── E-Mail-Versand (Resend) ────────────────────────────────────────────
+const transporter = require("./_mail");
 
 // ── Handler ─────────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
