@@ -37,8 +37,8 @@ Nach erfolgreicher Zahlung erhalten Sie automatisch eine Bestätigung und den Fr
 
 Bei Fragen: support@pan21.com oder 030 – 568 44 500
 
-PAN21.COM Corporate Consultants Ltd
-61 Bridge Street, Kington, Herefordshire, England`,
+PAN21.com International LLC
+7533 South Center View CT, STE R, West Jordan, UT 84084, USA`,
     html:
 `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><style>
 body{font-family:Arial,sans-serif;background:#f4f6fa;margin:0;padding:0}
@@ -56,7 +56,7 @@ a{color:#c9a84c}
 <p>Vielen Dank für Ihre Bestellung! Über den folgenden sicheren Stripe-Link können Sie die Zahlung abschließen:</p>
 <a class="btn" href="${checkoutUrl}">Jetzt bezahlen</a>
 <p>Nach erfolgreicher Zahlung erhalten Sie automatisch eine Bestätigung und den Fragebogen für die nächsten Schritte.</p>
-<div class="ft">PAN21.COM Corporate Consultants Ltd · 61 Bridge Street, Kington, Herefordshire, England<br>
+<div class="ft">PAN21.com International LLC · 7533 South Center View CT, STE R, West Jordan, UT 84084, USA<br>
 <a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://www.pan21.com">pan21.com</a></div>
 </div></body></html>`,
   })

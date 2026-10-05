@@ -142,8 +142,8 @@ ${nachricht}
 Bei Fragen: 030 – 568 44 500 oder support@pan21.com
 Online-Termin: https://telefon-termin.com/beratung/
 
-PAN21.COM Corporate Consultants Ltd
-61 Bridge Street, Kington, Herefordshire, England`,
+PAN21.com International LLC
+7533 South Center View CT, STE R, West Jordan, UT 84084, USA`,
       html:
 `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><style>
 body{font-family:Arial,sans-serif;background:#f4f6fa;margin:0;padding:0}
@@ -165,7 +165,7 @@ a{color:#c9a84c}
 ${safeNachricht}</div>
 <p>Telefonisch erreichbar: <strong>030 – 568 44 500</strong><br>
 Online-Termin: <a href="https://telefon-termin.com/beratung/">telefon-termin.com/beratung/</a></p>
-<div class="ft">PAN21.COM Corporate Consultants Ltd · 61 Bridge Street, Kington, Herefordshire, England<br>
+<div class="ft">PAN21.com International LLC · 7533 South Center View CT, STE R, West Jordan, UT 84084, USA<br>
 <a href="mailto:support@pan21.com">support@pan21.com</a> · <a href="https://www.pan21.com">pan21.com</a><br><br>
 Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese Nachricht antworten.</div>
 </div></body></html>`
