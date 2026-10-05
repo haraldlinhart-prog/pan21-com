@@ -152,7 +152,7 @@ function reflect(data) {
 
 async function loadStatus() {
   try {
-    const res = await fetch('/api/presence');
+    const res = await fetch('/api/presence/');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     reflect(data);
@@ -168,7 +168,7 @@ async function setStatus(partial) {
   statusEl.classList.remove('error');
   statusEl.textContent = 'Speichere…';
   try {
-    const res = await fetch('/api/presence', {
+    const res = await fetch('/api/presence/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(partial)

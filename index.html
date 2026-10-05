@@ -1714,7 +1714,7 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
   msg.className='form-msg';
   msg.textContent=isEN?'Sending…':'Wird gesendet…';
 
-  fetch('/api/contact',{
+  fetch('/api/contact/',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({email:email,name:name,land:land,nachricht:nachricht,_hp:hp,_ts:ts})
